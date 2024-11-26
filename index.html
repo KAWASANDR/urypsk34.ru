@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Поиграем?</title>
+<style>
+body {
+  background-color: #ADD8E6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+
+}
+
+.cards-container {
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  width: 250px;
+  height: 350px;
+  margin: 10px;
+  perspective: 1000px;
+  cursor: pointer;
+  transition: transform 0.5s;
+  position: relative;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  top: 0;
+  left: 0;
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+</style>
+</head>
+<body>
+<h1 class="title">Открой для себя интересные места Урюпинского района Волгоградской области</h1>
+<div class="cards-container"></div>
+
+<script>
+const cardsContainer = document.querySelector('.cards-container');
+const numCards = 5;
+const frontImage = 'images/front.jpg';
+
+const backImages = [];
+for (let i = 0; i < numCards; i++) {
+  backImages.push(`images/back${i + 1}.jpg`);
+}
+
+function createCard(backImage) {
+  const card = document.createElement('div');
+  card.classList.add('card');
+  const cardInner = document.createElement('div');
+  cardInner.classList.add('card-inner');
+
+  const cardFront = document.createElement('div');
+  cardFront.classList.add('card-face', 'card-front');
+  const frontImg = document.createElement('img');
+  frontImg.src = frontImage;
+  cardFront.appendChild(frontImg);
+
+  const cardBack = document.createElement('div');
+  cardBack.classList.add('card-face', 'card-back');
+  const backImg = document.createElement('img');
+  backImg.src = backImage;
+  cardBack.appendChild(backImg);
+
+  cardInner.appendChild(cardFront);  // Порядок важен!
+  cardInner.appendChild(cardBack);  // Порядок важен!
+  card.appendChild(cardInner);
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  return card;
+}
+
+for (let i = 0; i < numCards; i++) {
+  cardsContainer.appendChild(createCard(backImages[i]));
+}
+</script>
+
+</body>
+</html>
